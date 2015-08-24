@@ -23,7 +23,7 @@ static inline void uart_wait(int32_t count) {
 
 size_t strlen(const char* str) {
     size_t len = 0;
-    while (str[ret] != 0)
+    while (str[len] != 0)
         len++;
     return len;
 }
@@ -79,7 +79,7 @@ void uart_init() {
     uart_wait(CYCLEWAIT);
 
     // Clear GPPUDCLK0
-    mmio_write(UART0_ICR, OFF)
+    mmio_write(UART0_ICR, OFF);
 
     // Clear any pending interrupts.
     mmio_write(UART0_ICR, 0x7FF);

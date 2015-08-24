@@ -103,3 +103,40 @@ void uart_init() {
     // Enable RX and TX for UART0.
     mmio_write(UART0_CR, (1 << 0) | (1 << 8) | (1 << 9));
 }
+
+void uart_putc(unsigned char byte) {
+    // Wait for UART to be ready.
+    while (mmio_read(UART0_FR & (1 << 5))) {}
+    mmio_write(UART0_DR, byte);
+}
+
+unsigned char uart_getc() {
+    // Wait for UART to receive.
+    while (mmio_read(UART0_FR) & (1 << 4)) {}
+    return mmio_read(UART0_DR);
+}
+
+void uart_write(const unsigned char* buffer, size_t size) {
+    for (size_t i = 0; i < size; i++)
+        uart_putc(buffer[i]);
+}
+
+void uart_puts(const char* str) {
+    uart_write((const unsigned char*) str, strlen(str));
+}
+
+#if defined(__cplusplus)
+extern "C"  // force C linkage for kernel_main
+#endif
+void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags) {
+    (void) r0;
+    (void) r1;
+    (void) atags; //r2
+
+    uart_init();
+    uart_puts("Userspace is overrated.\r\n");
+
+    // Transmit any chars left in buffer.
+    while(true)
+        uart_putc(uart_getc());
+}

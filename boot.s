@@ -19,7 +19,7 @@ _start:
 
 2:
     cmp r4, r9
-    blo lb
+    blo 1b
 
     ldr r3, =kernel_main
     blx r3

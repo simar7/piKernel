@@ -1,7 +1,7 @@
 ######################################################################################
 # GNU GCC ARM Embeded Toolchain base directories and binaries
 ######################################################################################
-GCC_BASE = /usr/
+GCC_BASE = /usr/local/
 GCC_BIN  = $(GCC_BASE)bin/
 GCC_LIB  = $(GCC_BASE)arm-none-eabi/lib/
 GCC_INC  = $(GCC_BASE)arm-none-eabi/include/
